@@ -1,0 +1,24 @@
+node_modules
+# Keep environment variables out of version control
+.env
+.env*.local
+
+# Next.js
+/.next/
+/out/
+/build
+
+# Prisma
+/src/generated/prisma
+/generated/prisma
+
+# clerk configuration (can include secrets)
+/.clerk/
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts

@@ -1,0 +1,134 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// User model - synced with Clerk authentication
+model User {
+  id        String   @id @default(cuid())
+  clerkId   String   @unique
+  email     String   @unique
+  name      String?
+  imageUrl  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  groupMemberships GroupMember[]
+  expenses         Expense[]
+  splits           Split[]
+  settlementsFrom  Settlement[]  @relation("SettlementFrom")
+  settlementsTo    Settlement[]  @relation("SettlementTo")
+
+  @@index([clerkId])
+  @@index([email])
+}
+
+// Group model for organizing expenses
+model Group {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  imageUrl    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  members     GroupMember[]
+  expenses    Expense[]
+  settlements Settlement[]
+}
+
+// Group membership junction table
+model GroupMember {
+  id        String   @id @default(cuid())
+  userId    String
+  groupId   String
+  role      String   @default("member") // "admin" or "member"
+  joinedAt  DateTime @default(now())
+
+  // Relations
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  group Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, groupId])
+  @@index([userId])
+  @@index([groupId])
+}
+
+// Expense model for tracking purchases
+model Expense {
+  id          String   @id @default(cuid())
+  groupId     String
+  paidById    String
+  description String
+  amount      Float
+  currency    String   @default("USD")
+  date        DateTime @default(now())
+  receiptUrl  String?
+  receiptData Json?    // Stores extracted receipt line items
+  splitRule   Json?    // Stores natural language split rules
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  group   Group   @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  paidBy  User    @relation(fields: [paidById], references: [id], onDelete: Cascade)
+  splits  Split[]
+
+  @@index([groupId])
+  @@index([paidById])
+  @@index([date])
+}
+
+// Split model for tracking who owes what
+model Split {
+  id         String   @id @default(cuid())
+  expenseId  String
+  userId     String
+  amount     Float
+  percentage Float?   // Optional: percentage of total expense
+  createdAt  DateTime @default(now())
+
+  // Relations
+  expense Expense @relation(fields: [expenseId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([expenseId])
+  @@index([userId])
+}
+
+// Settlement model for tracking payments between users
+model Settlement {
+  id        String   @id @default(cuid())
+  groupId   String
+  fromId    String
+  toId      String
+  amount    Float
+  status    String   @default("pending") // "pending", "completed", "cancelled"
+  settledAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  group Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  from  User  @relation("SettlementFrom", fields: [fromId], references: [id], onDelete: Cascade)
+  to    User  @relation("SettlementTo", fields: [toId], references: [id], onDelete: Cascade)
+
+  @@index([groupId])
+  @@index([fromId])
+  @@index([toId])
+  @@index([status])
+}
