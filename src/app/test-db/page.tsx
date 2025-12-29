@@ -69,10 +69,10 @@ export default function TestDatabasePage() {
                 <div className="mt-8 p-6 bg-blue-50 dark:bg-blue-950 rounded-lg border border-blue-200 dark:border-blue-800">
                     <h3 className="font-semibold mb-2">💡 How to verify:</h3>
                     <ol className="list-decimal list-inside space-y-2 text-sm">
-                        <li>Click "Test Database Insert" to create a test user</li>
+                        <li>Click &quot;Test Database Insert&quot; to create a test user</li>
                         <li>Open Prisma Studio: <code className="bg-white dark:bg-slate-900 px-2 py-1 rounded">npm run db:studio</code></li>
-                        <li>Navigate to the "User" table to see the inserted data</li>
-                        <li>Click "Cleanup Test Data" to remove test users</li>
+                        <li>Navigate to the &quot;User&quot; table to see the inserted data</li>
+                        <li>Click &quot;Cleanup Test Data&quot; to remove test users</li>
                     </ol>
                 </div>
             </div>

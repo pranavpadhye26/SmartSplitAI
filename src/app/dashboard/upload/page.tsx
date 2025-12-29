@@ -244,7 +244,7 @@ function UploadContent() {
                         {step === "verify" && (
                             <div className="p-6 pt-0">
                                 <Button className="w-full" onClick={() => setStep("split")}>
-                                    Looks Good, Let's Split <ArrowRight className="ml-2 h-4 w-4" />
+                                    Looks Good, Let&apos;s Split <ArrowRight className="ml-2 h-4 w-4" />
                                 </Button>
                             </div>
                         )}
@@ -308,7 +308,7 @@ function UploadContent() {
                     <CardHeader>
                         <div className="mb-6 p-4 bg-muted/30 rounded-lg border border-border/50 text-sm">
                             <span className="font-medium text-foreground block mb-2 opacity-80 uppercase tracking-wider text-xs">Instruction Used</span>
-                            <p className="text-muted-foreground italic">"{splitPrompt}"</p>
+                            <p className="text-muted-foreground italic">&quot;{splitPrompt}&quot;</p>
                         </div>
                         <CardTitle className="text-primary flex items-center gap-2">
                             <CheckCircle2 className="h-5 w-5" /> Split Breakdown
