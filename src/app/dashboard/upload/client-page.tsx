@@ -72,7 +72,7 @@ function UploadContent() {
             setAnalyzedData(result.data);
             setStep("verify");
             // Set default split prompt based on total
-            setSplitPrompt(`Split ${result.data.currency} ${result.data.total} equaly`);
+            setSplitPrompt(`Split ${result.data.currency} ${result.data.total} equally`);
         } catch (error) {
             console.error("Analysis failed", error);
             toast.error("Failed to analyze receipt");

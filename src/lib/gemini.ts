@@ -15,7 +15,7 @@ export async function processReceiptImage(imageBase64: string, mimeType: string 
     
     1. Merchant Name
     2. Date (YYYY-MM-DD)
-    3. Currency Symbol
+    3. Currency (Symbol or Code, e.g. $, ₹, USD, INR). Look for symbols like ₹, Rs, €, £.
     4. Total Amount
     5. List of Items (name, quantity, price)
     6. Tax Amount

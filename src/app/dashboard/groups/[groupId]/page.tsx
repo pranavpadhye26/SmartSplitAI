@@ -91,7 +91,7 @@ export default async function GroupDetailPage({ params }: GroupDetailPageProps) 
                                 </Link>
                             </Button>
                             <Button asChild className="shadow-lg shadow-primary/20">
-                                <Link href={`/dashboard/groups/${group.id}/expenses/create`}>
+                                <Link href={`/dashboard/upload?groupId=${group.id}`}>
                                     <Plus className="mr-2 h-4 w-4" /> Add Expense
                                 </Link>
                             </Button>
